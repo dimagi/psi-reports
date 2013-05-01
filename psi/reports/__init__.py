@@ -1,6 +1,6 @@
 from corehq.apps.fixtures.models import FixtureDataItem, FixtureDataType
 from corehq.apps.reports.standard import CustomProjectReport, DatespanMixin
-from corehq.apps.reports.basic import BasicTabularReport, Column, FunctionView, SummingTabularReport
+from corehq.apps.reports.basic import BasicTabularReport, Column, FunctionView, SummingReportMixin
 from corehq.apps.reports.fields import AsyncDrillableField, ReportSelectField
 from util import get_unique_combinations
 from couchdbkit_aggregate.fn import mean
@@ -43,7 +43,7 @@ class DemoTypeField(ReportSelectField):
 
 class AggregateAtField(ReportSelectField):
     """
-        To Use: SUbclass and specify what the field options should be
+        To Use: Subclass and specify what the field options should be
     """
     slug = "aggregate_at"
     name = "Aggregate at what level"
@@ -83,7 +83,7 @@ def get_village_name(key, req):
 def get_village_class(key, req):
     return get_village(req, key[4]).fields.get("village_class", "No data")
 
-class PSIReport(SummingTabularReport, CustomProjectReport, DatespanMixin):
+class PSIReport(SummingReportMixin, BasicTabularReport, CustomProjectReport, DatespanMixin):
     update_after = True
     fields = ['corehq.apps.reports.fields.DatespanField','psi.reports.AsyncPlaceField',]
 
